@@ -1,0 +1,63 @@
+
+.navbar{
+    border:1px solid red;
+    background-color: rgb(208, 20, 20);
+    color: white;
+}
+
+.cont__nav{
+    @include flexbox(space-between, center, row);
+    padding: 0 1rem;
+    height: 4.5rem;
+    @include MQ-lg{
+        display:inline-block;
+        width: 94vw;
+    }
+}
+
+.nav__logo{
+    font-size: 2.5rem;
+
+    @include MQ-lg{
+        display: none;
+    }
+}
+
+.nav__btn{
+    font-size: 2rem;
+
+    @include MQ-lg{
+        display: none;
+    }
+}
+
+.nav__list{
+    display: none;
+    list-style: none;
+    
+    &-cont{
+
+        @include MQ-lg{
+            @include flexbox(center, center, row);
+            gap: 1.5rem;
+        }
+        
+    }
+
+    &-item{
+        font-size: 1.3rem;
+    }
+
+    &-logo{
+        font-size: 2.5rem;
+        display: none;
+    }
+
+    @include MQ-lg{
+        @include flexbox(space-between, center, row );
+        //width: 100%;
+        &-logo{
+            display: block;
+        }
+    }
+}

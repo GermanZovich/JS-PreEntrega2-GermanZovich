@@ -1,0 +1,46 @@
+// Variables
+$c-fondo-nav: rgb(197, 43, 43);
+$c-fondo-body:rgb(226, 226, 226);
+$c-fondo-texto-p: rgb(205, 0, 0);
+$c-borde-prod:rgb(183, 182, 182);
+$c-fondo-tar: rgb(239, 238, 238);
+
+// Maps
+
+
+//Mixins,
+
+@mixin flexbox($justify: "center", $align : "center", $direction : "row"){
+    display: flex;  
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+@mixin grid($column: "1fr", $row: "1fr"){
+    display: grid;
+    grid-template-columns: $column;
+    grid-template-rows: $row;
+}
+
+@mixin MQ-md{
+    @media (min-width: 768px){
+        @content;
+    }
+}
+
+@mixin MQ-lg{
+    @media (min-width: 1200px){
+        @content;
+    }
+}
+
+//Estilos Generales
+
+body{
+    background-color: $c-fondo-body;
+}
+
+h1{
+    display: none;
+}

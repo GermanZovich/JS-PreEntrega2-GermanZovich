@@ -1,0 +1,108 @@
+.section-prod{
+    width: 90vw;
+    //align-content: center;
+    margin: auto;
+    margin-top: 2rem;
+    padding: 2rem;
+    //border: 1px solid $c-borde-prod;
+    border-radius: 1rem;
+
+    @include flexbox(flex-start, flex-start, column);
+    flex-wrap: wrap;
+    gap: 2rem;
+
+    
+
+}
+
+.titulo-prod{
+    font-size: 2rem;
+    color: $c-fondo-texto-p;
+}
+
+
+.cont-prod{
+    @include flexbox(space-between, center, row);
+    flex-wrap: wrap;
+    width: 100%;
+    
+    
+
+    &__tarjeta{
+        border: 1px solid $c-borde-prod;
+        border-radius: 0.7rem;
+        //background-color: $c-fondo-tar;
+        margin: auto;
+        margin-bottom: 1rem;
+        @include flexbox(center, center, column);
+        img{
+            overflow: hidden;
+            width: 300px;
+            height: 200px;
+        }
+    }
+
+    @include MQ-md{
+        //display: grid;
+       // grid-template-columns: repeat(2, 1fr);
+       // gap: 1rem;
+    }
+
+    @include MQ-lg{
+       // grid-template-columns: repeat(4, 1fr); 
+       // gap: 2rem;
+
+        &__tarjeta{
+            margin-bottom: 0;
+        }
+
+    }
+}
+
+
+
+.nombre-prod{
+    font-size: 1.7rem;
+    font-weight: 1;
+    margin-bottom: 0;
+}
+
+.precio-prod{
+    font-size: 1.3rem;
+    margin-top: 0.5rem;
+}
+
+.cont-carrito{
+    @include flexbox(space-between, center, row);
+    gap: 0.5rem;
+    margin-top: 0;
+
+    p{
+        border: 1px solid $c-borde-prod;
+        //height: 1rem;
+        width: 2rem;
+        align-self: center;
+    }
+}
+
+.boton-carrito{
+    border: 1px solid $c-borde-prod;
+    border-radius:0.5rem;
+    width: 3.5rem;
+    height: 3rem;
+    background-color: rgb(140, 219, 126);
+    color: black;
+    align-self: end;
+    margin-left: 1rem;
+    p{
+        border: 0px solid red ;
+        //cambiar todo esto
+    }
+}
+
+.botonCantidad{
+    font-size: 1.5rem;
+    padding: 0 0.5rem;
+
+    border-radius: 0.4rem;
+}

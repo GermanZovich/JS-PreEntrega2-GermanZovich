@@ -1,0 +1,26 @@
+
+.cont__texto-p{
+    //height: 10vh;
+    width: 90vw;
+    margin: auto;
+    margin-top: 1rem;
+    background-color: $c-fondo-texto-p;
+    color: white;
+    border-radius: 1rem;
+    
+    @include flexbox(center, center, column);
+}
+
+.titulo-p{
+    font-size: 3rem;
+    margin-bottom: 0;
+}
+
+.texto-p{
+    margin-top: 0;
+    padding-bottom: 1.5rem;
+    font-size: 1.2rem;
+}
+
+
+
