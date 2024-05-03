@@ -30,6 +30,21 @@ h1 {
   font-size: 1.2rem;
 }
 
+.contenedorCarrito {
+  border: 1px solid red;
+  width: 90%;
+  margin: auto;
+}
+
+.contenedorProducto {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: "1fr";
+  gap: 3rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
 .navbar {
   border: 1px solid red;
   background-color: rgb(208, 20, 20);
@@ -174,18 +189,23 @@ h1 {
   align-self: center;
 }
 
-.boton-carrito {
+.botonCarrito {
   border: 1px solid rgb(183, 182, 182);
   border-radius: 0.5rem;
-  width: 3.5rem;
+  width: 4.5rem;
   height: 3rem;
   background-color: rgb(140, 219, 126);
   color: black;
   align-self: end;
   margin-left: 1rem;
+  margin-bottom: 0.5rem;
 }
-.boton-carrito p {
+.botonCarrito p {
   border: 0px solid red;
+}
+
+.botonCarrito:active {
+  background-color: rgb(62, 107, 55);
 }
 
 .botonCantidad {

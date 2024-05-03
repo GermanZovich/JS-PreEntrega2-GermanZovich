@@ -85,10 +85,10 @@
     }
 }
 
-.boton-carrito{
+.botonCarrito{
     border: 1px solid $c-borde-prod;
     border-radius:0.5rem;
-    width: 3.5rem;
+    width: 4.5rem;
     height: 3rem;
     background-color: rgb(140, 219, 126);
     color: black;
@@ -98,6 +98,11 @@
         border: 0px solid red ;
         //cambiar todo esto
     }
+    margin-bottom: 0.5rem;
+}
+
+.botonCarrito:active{
+    background-color: rgb(62, 107, 55);
 }
 
 .botonCantidad{

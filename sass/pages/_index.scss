@@ -22,5 +22,19 @@
     font-size: 1.2rem;
 }
 
+.contenedorCarrito{
+    border: 1px solid red;
+    width: 90%;
+    margin: auto;
+}
+
+.contenedorProducto{
+    @include grid(1fr 1fr 1fr);
+    gap: 3rem;
+    text-align: center;
+
+    font-size: 1.5rem;
+}
+
 
 
