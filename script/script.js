@@ -134,7 +134,7 @@ for(i = 0; i < arrayProductos.length; i++){
     let verificarContenedor = ""; //array que contiene los ids del carrito 
 
     //evento del boton de agregar al carrito
-    botonAgregar.onclick = () => {
+    function agregarAlCarrito () {
         this.verificarContenedor = verificarContenedor; // declaracion del arrar dentro de la funcion
         
         let cantidadDeCarritos = [`contenedor${botonAgregar.id}`]; //asignacion de cada caarrito segun el id del boton
@@ -143,15 +143,35 @@ for(i = 0; i < arrayProductos.length; i++){
         //capturamos el indice en un variable
         let index = arrayProductos.findIndex(x => x.identificador === `${botonAgregar.id}`);
         // variable del total de la compra
-        let precioTotal = parseInt(arrayProductos[index].precio) * parseInt(cantidadAgregada); 
+        let precioTotal = parseInt(arrayProductos[index].precio) * parseInt(cantidadAgregada);
+
+        //defino la cracion del contenedor dentro del evento click en el boton de agregar        
+        let contenedorProducto= document.createElement(`div`);
+            contenedorProducto.classList.add("contenedorProducto");
+            contenedorProducto.id = `contenedor${botonAgregar.id}`;
+            contenedor.appendChild(contenedorProducto);
         
         //CONDICIONALES PARA CREAR LOS NODOS DEL CARRITO DE COMPRAS
         if(verificarContenedor == `contenedor${botonAgregar.id}`){
             this.cantidadAgregada = cantidadAgregada;
             precioTotal = parseInt(arrayProductos[index].precio) * parseInt(cantidadAgregada);
             console.log(`cantidadAgregadaActualizada: ${cantidadAgregada} || precioTotalActualizado: ${precioTotal}`);
-            //LLEGO A ACTUALIZAR LOS VALORES DEL CARRITO PERO NO ENCUENTRO LA FORMA
-            //DE IMPRIMIRLOS NUEVAMENTE EN EL NODO CORRESPONDIENTE
+            
+            // obtengo los nodos que estan dentro de cada tarjeta del carrito
+            let nodoBorrarNombre = document.getElementById(`actualizarNombre${index}`);
+            //sentencia para eliminar cada uno de los nodos
+            nodoBorrarNombre.remove();
+            let nodoBorrarCantidad = document.getElementById(`actualizarCantidad${index}`);
+            nodoBorrarCantidad.remove();
+            let nodoBorrarPrecioT = document.getElementById(`actualizarPrecioT${index}`);
+            nodoBorrarPrecioT.remove();
+
+            //se vuelven a crear con los valores actualizados
+            contenedorProducto.innerHTML= [`
+            <p id="actualizarNombre${index}">${arrayProductos[index].nombre}</p>
+            <p class="cantidadProductoCarrito${index} " id="actualizarCantidad${index}">Unidades: ${cantidadAgregada}</p>
+            <p class="precioTotal${index}"id="actualizarPrecioT${index}">Precio Total: ${precioTotal}</p>
+            `];
             
 
             
@@ -160,10 +180,7 @@ for(i = 0; i < arrayProductos.length; i++){
         }else if(`${cantidadAgregada}` != 0){
 
             //CONTRUCTOR DEL NODO DEL CARRITO
-            let contenedorProducto= document.createElement(`div`);
-            contenedorProducto.classList.add("contenedorProducto");
-            contenedorProducto.id = `contenedor${botonAgregar.id}`;
-            contenedor.appendChild(contenedorProducto);
+            
 
             verificarContenedor = contenedorProducto.id;
 
@@ -171,15 +188,17 @@ for(i = 0; i < arrayProductos.length; i++){
             console.log(`el index de este coso es: ${index}` );
 
             
-
-            contenedorProducto.innerHTML =[`<p>${arrayProductos[index].nombre}</p>
-            <p id="cantidadProductoCarrito${index} actualizar${index}">Unidades: ${cantidadAgregada}</p>
-            <p id="precioTotal${index} actualizar${index}">Precio Total: ${precioTotal}</p>
+            //creaaciond de los elementos del carrito por primera vez
+            contenedorProducto.innerHTML =[`<p id="actualizarNombre${index}">${arrayProductos[index].nombre}</p>
+            <p class="cantidadProductoCarrito${index} " id="actualizarCantidad${index}">Unidades: ${cantidadAgregada}</p>
+            <p class="precioTotal${index}"id="actualizarPrecioT${index}">Precio Total: ${precioTotal}</p>
             `];
             
         }
             
          }
+
+         botonAgregar.addEventListener("click", agregarAlCarrito);
             
             
             
