@@ -1,6 +1,5 @@
 //VARIABLES
-let enviar = false;
-
+let cantInicial = 0;
 // CLASES
 class Producto{
     constructor(identificador, nombre, imagen, precio, stock, descripcion){
@@ -15,19 +14,21 @@ class Producto{
 
 // DECLARACION DE OBJETOS
 let arrayProductos = [
-    new Producto("P01","Barra de chocolate", "rutafake", 3500, 50, "Chocolate en barra 70% de cacao."),
-    new Producto("P02","Barra de chocolate 2", "rutafake", 4000, 50, "Chocolate en barra 80% de cacao."),
-    new Producto("P03","Bombones de Chocolate", "rutafake", 12000, 100, "Bombones de chocolate marca Felfort"),
+    new Producto("0","Barra de chocolate", "rutafake", 3500, 50, "Chocolate en barra 70% de cacao."),
+    new Producto("1","Barra de chocolate 2", "rutafake", 4000, 50, "Chocolate en barra 80% de cacao."),
+    new Producto("2","Bombones de Chocolate", "rutafake", 12000, 100, "Bombones de chocolate marca Felfort"),
 ];
 
 
 // FUNCIONES
 
 let crearTarjetas = function(array){
+    
     // creo el section contenedor del titulo y el contenedor de las tarjetas
     let contenedor = document.createElement("section");
     contenedor.classList.add("section-prod"); //le asigno la clase al section
     document.body.appendChild(contenedor);// lo declaro hijo del body
+
     //creo un nuevo nodo dentro del contenedor
     contenedor.innerHTML = `<h3 class="titulo-prod">Productos</h3>`; 
     
@@ -35,180 +36,239 @@ let crearTarjetas = function(array){
     let contenedorTarjetas = document.createElement("div");
     contenedor.appendChild(contenedorTarjetas);// se lo declaro como hijo del nodo section
     contenedorTarjetas.classList.add("cont-prod"); // se le agrega la clase al nodo div
+    //contenedorTarjetas.id = `tarjeta${array.identificador}`;
 
     //bucle creador de tarjetas para cada producto
-    for(i = 0; i < array.length; i++) {
+    arrayProductos.forEach(function (producto, i) {
+
+        let identificador = array[i].identificador;
+    
         let tarjeta = document.createElement('div'); //crea el nodo div contenedor de la tarjeta
-        tarjeta.classList.add("cont-prod__tarjeta"); // se le agrega la clase
+        tarjeta.classList.add(`contTarjeta`); // se le agrega la clase
         contenedorTarjetas.appendChild(tarjeta); // se lo declara hijo del contenedor de las tarjetas
+        tarjeta.id = `tarjeta${identificador}`; // se agrega un id unico para cada tajeta
+
         //se crea todos los nodos que conforman la tarjeta
-        tarjeta.innerHTML = `
-            <img>
-            <h3 class="nombre-prod">${array[i].nombre}</h3>
-            <p class="precio-prod">$${array[i].precio}</p>
-            <div class="cont-carrito">
-                <button class="botonCantidad" id="btnMas${array[i].identificador}">+</button>
-                <div id="contCantidadProducto${array[i].identificador}"><p id="cantidadProducto${array[i].identificador}">0</p></div>
-                <button class="botonCantidad" id="btnMenos${array[i].identificador}">-</button>
-                    <button class="botonCarrito" id="${array[i].identificador}">Agregar</button>
-                
-        `;         
-    }
+        let imgTarjeta = document.createElement(`img`);
+        //aplicando estilos a las imagenes del
+        imgTarjeta.setAttribute("style", `border: 1px solid red;
+         width: 300px; height: 200px;
+         overflow:hidden;
+         `);
+        tarjeta.appendChild(imgTarjeta);//declaramos la imagen como hijo de la tarjeta
+
+        let nombreProd = document.createElement("p");
+        nombreProd.classList.add("nombreTarjeta");
+        tarjeta.appendChild(nombreProd);
+        nombreProd.textContent = `${arrayProductos[i].nombre}`;
+
+        let precio = document.createElement('p');
+        precio.classList.add('precioTarjeta');
+        tarjeta.appendChild(precio);
+        precio.textContent = `$${arrayProductos[i].precio}`;
+
+        let contBtnTarjetas = document.createElement(`div`);
+        contBtnTarjetas.classList.add('contBtnTarjeta');
+        tarjeta.appendChild(contBtnTarjetas);
+
+
+        let btnMas = document.createElement('button');
+        btnMas.classList.add('btnMasTarjeta');
+        btnMas.textContent = "+";
+        contBtnTarjetas.appendChild(btnMas);
+
+        let cantidad = document.createElement('p');
+        cantidad.textContent =`${cantInicial}`;
+        contBtnTarjetas.appendChild(cantidad);
+
+
+
+        let btnMenos = document.createElement('button');
+        btnMenos.classList.add('btnMenosTarjeta');
+        btnMenos.textContent = "-";
+        contBtnTarjetas.appendChild(btnMenos);
+
+        let btnAgregar = document.createElement('button');
+        btnAgregar.classList.add(`btnAgregar`);
+        btnAgregar.textContent = `Agregar`;
+        contBtnTarjetas.appendChild(btnAgregar);
+
+    
+    });    
 }
+
+function sumarCant(contenedor){
+    let objCant = contenedor.firstChild.nextSibling;
+    let cant = parseInt(objCant.textContent);
+
+    cant++;
+
+    objCant.textContent = `${cant}`;
+}
+
+function restarCant(contenedor){
+    let objCant = contenedor.firstChild.nextSibling;
+    let cant = parseInt(objCant.textContent);
+
+    if(cant > 0){
+        cant--;
+    }
+
+    objCant.textContent = `${cant}`;
+}
+
+function agregarProductosLS(contenedorBtn, contenedorTarj, indice){
+    //obtengo el texto del nombre del produto de la tarjeta
+    let nomProd = contenedorTarj.firstChild.nextSibling.textContent;
+    //obtengo el string del precio del producto
+    let precio = contenedorTarj.lastChild.previousSibling.textContent;
+    // le quito el primer caracter ($) y lo conviero a entero
+    let precioLimpio = parseInt(precio.slice(1));
+    
+    let cantidad = parseInt(contenedorBtn.firstChild.nextSibling.textContent);
+
+    let precioTotal = precioLimpio * cantidad;
+
+    //calcularmos el precio total y lo agregarmos al localStorage
+    if(cantidad > 0  && contenedorTarj.id === `tarjeta${indice}`){
+        let agregarProd = {id: `${indice}`, nombre: `${nomProd}`, precio: `${precioTotal}`,
+        cantidad: `${cantidad}`};
+        localStorage.setItem(`producto${indice}`, JSON.stringify(agregarProd));
+        console.log(agregarProd);
+    }
+
+
+    
+   // console.log(typeof(precioLimpio));
+    //console.log(`${precioLimpio}`);
+
+  //  console.log(`cantidad: ${cantidad}`);
+    
+   // console.log(nomProd);
+
+}
+
+function crearCarrito(){
+    // ESTO ESTA TODO MAL BUSCAR COMO ACTIALIZAR LA FUNCION CUANDO SE AGREGUE UN PRODUCTO
+    //AL LOCAL STORAGE, CREAR EL CARRITO Y ACTUALIZAR TENIENDO EL CUENTA ESTE MISMO
+
+    let exiteContCarrito = document.querySelector('.contCarrito');
+
+    if(exiteContCarrito === null && localStorage.length > 0){
+        let contCarrito = document.createElement("section");
+        contCarrito.classList.add('contCarrito');
+        document.body.appendChild(contCarrito);
+    }
+
+    let contCarrito = document.querySelector('.contCarrito');
+    
+    
+
+    for(i = 0; i < localStorage.length; i++){  
+        let clave = localStorage.key(i);
+        console.log(`primera${clave}`);
+        console.log(`vuelta ${i}`);
+        
+        let productoLS = JSON.parse(localStorage.getItem(`${clave}`));
+        console.log(productoLS);
+
+
+        
+        
+        //bucle para crear los nodos de tajeta del carrito
+    let existeContProd = document.querySelectorAll(`#contProd${arrayProductos[i].id}`);
+    console.log(`existe el contenedor ${existeContProd.length}`);
+
+
+    if(existeContProd.length <= 0){ // AQUI TENGO EL PROBLEMA DE LA DUPLICACIPON
+
+
+
+        console.log(`creando carrito en la vuelta ${i}`);
+        let contenedorProducto = document.createElement('div');
+            contenedorProducto.classList.add('contProd');
+            contenedorProducto.id = `contProd${productoLS['id']}`;
+            contCarrito.appendChild(contenedorProducto);
+
+        for(x = 1; x <=  3; x++){
+               switch(x){
+                    case 1:
+                       let contNombre = document.createElement('div');
+                        contNombre.classList.add('contTextocarrito');
+                       contenedorProducto.appendChild(contNombre);
+
+                       let textoNombre = document.createElement('p');
+                       contNombre.appendChild(textoNombre);
+                       textoNombre.textContent = `${productoLS['nombre']}`;
+                    break;
+                    case 2: 
+                        let contUnidades = document.createElement('div');
+                        contUnidades.classList.add('contTextocarrito');
+                        contenedorProducto.appendChild(contUnidades);
+                        
+                        let textoUnidades = document.createElement('p');
+                        textoUnidades.textContent = `${productoLS['cantidad']}`;
+                        contUnidades.appendChild(textoUnidades);
+                    break;
+
+                    case 3:
+                        let contPrecio = document.createElement('div');
+                        contPrecio.classList.add('contTextoCarrito');
+                        contenedorProducto.appendChild(contPrecio);
+
+                        let precioCompleto = productoLS['precio'] * productoLS['cantidad'];
+
+                        let textoPrecio = document.createElement('p');
+                        textoPrecio.textContent = `${precioCompleto}`;
+                        contPrecio.appendChild(textoPrecio);
+
+                    break;
+
+                }
+           }  
+       
+        }else{
+            console.log(`ya existe`);
+
+            continue;
+        }
+    }   
+}
+
 
 // LLAMADO
 document.addEventListener("DOMContentLoaded", crearTarjetas(arrayProductos));
+document.addEventListener("DOMContentLoaded", crearCarrito());
 
-// BUCLE PARA DETECTAR LOS EVENTOS DE LOS BOTONES DE LAS TARJETAS
-let numerodevueltas = 0; // varaible de prueba
-
+//Bucle para la deteccion de elementos generados a partir de la cantidad de productos que haya
 for(i = 0; i < arrayProductos.length; i++){
-    //varaible para poder operar dentro de las funciones con el identificador
-    const indice = `${arrayProductos[i].identificador}`;
-    console.log(`${indice}`);
-    
-    //variable que reemplaza el valor de los productos segun los eventos de sumas o resta
-    let cantidadAgregada = 0;
+    let indice = i;
+    //declaramos el array de botones
+    let botonesMas = document.getElementsByClassName(`btnMasTarjeta`);
+    let botonesMenos = document.getElementsByClassName(`btnMenosTarjeta`);
+    let botonesAgregar = document.getElementsByClassName(`btnAgregar`);
+    //declaramos el contenedor padre de lo botones de cada tarjeta
+    let contenedorBtnMas = botonesMas[i].parentNode; 
+    let contenedorBtnMenos = botonesMenos[i].parentNode;
+    let contenedorAgregar = botonesAgregar[i].parentNode;
+    let contenedorTarjeta = contenedorAgregar.parentNode;
+    console.log(contenedorTarjeta);
 
-    //variable para borrar la cantidad asignada por defecto
-    let cantidadActual = document.getElementById(`cantidadProducto${indice}`);
+    botonesMas[i].onclick = () => {
+        sumarCant(contenedorBtnMas);
+    }
 
-    //declaracion del boton suma para cada tarjeta
-    const buttonMas = document.querySelector(`#btnMas${indice}`);
+    botonesMenos[i].onclick = () => {
+        restarCant(contenedorBtnMenos);
+    }
 
-    //funcion de evento click en el boton de suma
-    buttonMas.onclick = () => {
+    botonesAgregar[i].onclick = () => {
+        agregarProductosLS(contenedorAgregar, contenedorTarjeta, indice);
+        crearCarrito();
+    }
+}
 
-        numerodevueltas++;
-        // variable de cantidad de productos se inicia en cero y cada vez suma uno
-        cantidadAgregada++;
+//Bucle para deteccion de objertos producto en el localStorage
 
-        //eliminacion del elemento inicial de la tarjeta
-        cantidadActual.remove();
-        
-        // obtenemos el elemento contenedor del contador de productos
-        let contCant = document.getElementById(`contCantidadProducto${indice}`);
-
-        // generamos un nuevo nodo con la variable cantidad actual
-        contCant.innerHTML = `<p id="cantidadProducto${indice}">${cantidadAgregada}</p>`;
-
-        
-        // imprimimos la variable para debug
-        console.log(`CLICK BUCLE ${numerodevueltas}`);
-    };
-
-    //declaracion del boton resta para cada tarjeta
-    const buttonMenos = document.querySelector(`#btnMenos${indice}`);
-
-    //funcion de evento click para el boton de resta
-    buttonMenos.onclick = () => {
-        //variable debug
-        numerodevueltas++;
-
-        //CONDICIONAL PARA NO OBTENER NUMEROS NEGATIVOS
-        if(cantidadAgregada > 0){
-            // variable de cantidad de productos se inicia en cero y se resta uno
-            cantidadAgregada--;
-        }
-        
-        //eliminacion del elemento inicial de la tarjeta;
-        //cantidadActual.remove();
-
-        //obtenemos el contenedor del contador de la cantidad de productos
-        let contCant = document.getElementById(`contCantidadProducto${indice}`);
-
-        // generammos el nuevo nodo con la cantidad actual
-        contCant.innerHTML = `<p id="cantidadProducto${indice}">${cantidadAgregada}</p>`;
-
-        // debug
-        console.log(`CLICK BUCLE ${numerodevueltas}`);
-    };
-
-    //declaracion del boton de agregar
-    const botonAgregar = document.querySelector(`#${indice}`);
-    //funcion de evento click para el boton agregar
-    let contenedor = document.createElement(`section`); //creando el contenedor del carrito
-        contenedor.classList.add("contenedorCarrito"); // aplicando clase al contenedor
-        document.body.appendChild(contenedor);//asignando el contenedor carrito como hijo de body
-
-    let verificarContenedor = ""; //array que contiene los ids del carrito 
-
-    //evento del boton de agregar al carrito
-    function agregarAlCarrito () {
-        this.verificarContenedor = verificarContenedor; // declaracion del arrar dentro de la funcion
-        
-        let cantidadDeCarritos = [`contenedor${botonAgregar.id}`]; //asignacion de cada caarrito segun el id del boton
-        console.log("cantidadCarritos: ", cantidadDeCarritos);
-
-        //capturamos el indice en un variable
-        let index = arrayProductos.findIndex(x => x.identificador === `${botonAgregar.id}`);
-        // variable del total de la compra
-        let precioTotal = parseInt(arrayProductos[index].precio) * parseInt(cantidadAgregada);
-
-        //defino la cracion del contenedor dentro del evento click en el boton de agregar        
-        let contenedorProducto= document.createElement(`div`);
-            contenedorProducto.classList.add("contenedorProducto");
-            contenedorProducto.id = `contenedor${botonAgregar.id}`;
-            contenedor.appendChild(contenedorProducto);
-        
-        //CONDICIONALES PARA CREAR LOS NODOS DEL CARRITO DE COMPRAS
-        if(verificarContenedor == `contenedor${botonAgregar.id}`){
-            this.cantidadAgregada = cantidadAgregada;
-            precioTotal = parseInt(arrayProductos[index].precio) * parseInt(cantidadAgregada);
-            console.log(`cantidadAgregadaActualizada: ${cantidadAgregada} || precioTotalActualizado: ${precioTotal}`);
-            
-            // obtengo los nodos que estan dentro de cada tarjeta del carrito
-            let nodoBorrarNombre = document.getElementById(`actualizarNombre${index}`);
-            //sentencia para eliminar cada uno de los nodos
-            nodoBorrarNombre.remove();
-            let nodoBorrarCantidad = document.getElementById(`actualizarCantidad${index}`);
-            nodoBorrarCantidad.remove();
-            let nodoBorrarPrecioT = document.getElementById(`actualizarPrecioT${index}`);
-            nodoBorrarPrecioT.remove();
-
-            //se vuelven a crear con los valores actualizados
-            contenedorProducto.innerHTML= [`
-            <p id="actualizarNombre${index}">${arrayProductos[index].nombre}</p>
-            <p class="cantidadProductoCarrito${index} " id="actualizarCantidad${index}">Unidades: ${cantidadAgregada}</p>
-            <p class="precioTotal${index}"id="actualizarPrecioT${index}">Precio Total: ${precioTotal}</p>
-            `];
-            
-
-            
-
-            console.log("actualizar valores");
-        }else if(`${cantidadAgregada}` != 0){
-
-            //CONTRUCTOR DEL NODO DEL CARRITO
-            
-
-            verificarContenedor = contenedorProducto.id;
-
-            
-            console.log(`el index de este coso es: ${index}` );
-
-            
-            //creaaciond de los elementos del carrito por primera vez
-            contenedorProducto.innerHTML =[`<p id="actualizarNombre${index}">${arrayProductos[index].nombre}</p>
-            <p class="cantidadProductoCarrito${index} " id="actualizarCantidad${index}">Unidades: ${cantidadAgregada}</p>
-            <p class="precioTotal${index}"id="actualizarPrecioT${index}">Precio Total: ${precioTotal}</p>
-            `];
-            
-        }
-            
-         }
-
-         botonAgregar.addEventListener("click", agregarAlCarrito);
-            
-            
-            
-
-
- }
 
     
-
-    
-
-//Evento
-

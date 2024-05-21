@@ -22,17 +22,22 @@
     font-size: 1.2rem;
 }
 
-.contenedorCarrito{
+.contCarritoOculto{
+    display: none;
+}
+
+.contCarrito{
     border: 1px solid red;
     width: 90%;
     margin: auto;
+    
 }
 
 .contenedorProducto{
-    @include grid(1fr 1fr 1fr);
+    @include grid(1fr 1fr 1fr 1fr);
     gap: 3rem;
     text-align: center;
-
+    border-top: 1px solid red;
     font-size: 1.5rem;
 }
 

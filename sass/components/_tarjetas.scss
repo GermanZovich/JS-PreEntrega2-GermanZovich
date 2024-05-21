@@ -28,46 +28,43 @@
     
     
 
-    &__tarjeta{
-        border: 1px solid $c-borde-prod;
-        border-radius: 0.7rem;
-        //background-color: $c-fondo-tar;
-        margin: auto;
-        margin-bottom: 1rem;
-        @include flexbox(center, center, column);
-        img{
-            overflow: hidden;
-            width: 300px;
-            height: 200px;
-        }
-    }
-
+    
     @include MQ-md{
         //display: grid;
        // grid-template-columns: repeat(2, 1fr);
        // gap: 1rem;
     }
 
+    
+}
+
+.contTarjeta{
+    border: 1px solid $c-borde-prod;
+    border-radius: 0.7rem;
+    //background-color: $c-fondo-tar;
+    margin: auto;
+    margin-bottom: 1rem;
+    @include flexbox(center, center, column);
+
+
     @include MQ-lg{
-       // grid-template-columns: repeat(4, 1fr); 
-       // gap: 2rem;
-
-        &__tarjeta{
-            margin-bottom: 0;
-        }
-
-    }
+        // grid-template-columns: repeat(4, 1fr); 
+        // gap: 2rem;
+             margin-bottom: 0;
+ 
+     }
 }
 
 
 
-.nombre-prod{
+
+.nombreProd{
     font-size: 1.7rem;
     font-weight: 1;
     margin-bottom: 0;
 }
 
-.precio-prod{
+.precio{
     font-size: 1.3rem;
     margin-top: 0.5rem;
 }
