@@ -118,78 +118,40 @@ function restarCant(contenedor){
 }
 
 function agregarProductosLS(contenedorBtn, contenedorTarj, indice){
-    //obtengo el texto del nombre del produto de la tarjeta
-    let nomProd = contenedorTarj.firstChild.nextSibling.textContent;
     //obtengo el string del precio del producto
-    let precio = contenedorTarj.lastChild.previousSibling.textContent;
+    let precio = arrayProductos[indice].precio;
     // le quito el primer caracter ($) y lo conviero a entero
-    let precioLimpio = parseInt(precio.slice(1));
     
     let cantidad = parseInt(contenedorBtn.firstChild.nextSibling.textContent);
 
-    let precioTotal = precioLimpio * cantidad;
+    let precioTotal = precio * cantidad;
 
     //calcularmos el precio total y lo agregarmos al localStorage
     if(cantidad > 0  && contenedorTarj.id === `tarjeta${indice}`){
-        let agregarProd = {id: `${indice}`, nombre: `${nomProd}`, precio: `${precioTotal}`,
+        let agregarProd = {id: `${arrayProductos[indice].identificador}`, nombre: `${arrayProductos[indice].nombre}`, precio: `${precioTotal}`,
         cantidad: `${cantidad}`};
         localStorage.setItem(`producto${indice}`, JSON.stringify(agregarProd));
         console.log(agregarProd);
     }
 
-
-    
-   // console.log(typeof(precioLimpio));
-    //console.log(`${precioLimpio}`);
-
-  //  console.log(`cantidad: ${cantidad}`);
-    
-   // console.log(nomProd);
-
 }
 
-function crearCarrito(){
-    // ESTO ESTA TODO MAL BUSCAR COMO ACTIALIZAR LA FUNCION CUANDO SE AGREGUE UN PRODUCTO
-    //AL LOCAL STORAGE, CREAR EL CARRITO Y ACTUALIZAR TENIENDO EL CUENTA ESTE MISMO
+function creadorProdCarrito(productoLS, clave){
+    // esta es la funcion que crea los contenedores dentro del carrito
+    let existeContProd = document.querySelector(`#cont${clave}`);
 
-    let exiteContCarrito = document.querySelector('.contCarrito');
+    console.log(`existe contenedor ${existeContProd}`);
 
-    if(exiteContCarrito === null && localStorage.length > 0){
-        let contCarrito = document.createElement("section");
-        contCarrito.classList.add('contCarrito');
-        document.body.appendChild(contCarrito);
-    }
+    let contCarrito = document.querySelector('.contCarrito'); // obtiene el nodo del carrito
 
-    let contCarrito = document.querySelector('.contCarrito');
-    
-    
-
-    for(i = 0; i < localStorage.length; i++){  
-        let clave = localStorage.key(i);
-        console.log(`primera${clave}`);
-        console.log(`vuelta ${i}`);
-        
-        let productoLS = JSON.parse(localStorage.getItem(`${clave}`));
-        console.log(productoLS);
-
-
-        
-        
-        //bucle para crear los nodos de tajeta del carrito
-    let existeContProd = document.querySelectorAll(`#contProd${arrayProductos[i].id}`);
-    console.log(`existe el contenedor ${existeContProd.length}`);
-
-
-    if(existeContProd.length <= 0){ // AQUI TENGO EL PROBLEMA DE LA DUPLICACIPON
-
-
-
-        console.log(`creando carrito en la vuelta ${i}`);
+    //si no existe el contenedor del carrito lo crea, sino lo actualiza 
+    if(existeContProd === null){ 
         let contenedorProducto = document.createElement('div');
             contenedorProducto.classList.add('contProd');
-            contenedorProducto.id = `contProd${productoLS['id']}`;
+            contenedorProducto.id = `cont${clave}`;
             contCarrito.appendChild(contenedorProducto);
 
+        //bucle para crear los nodos hijos de cada contenedor de producto en el carrito
         for(x = 1; x <=  3; x++){
                switch(x){
                     case 1:
@@ -216,10 +178,8 @@ function crearCarrito(){
                         contPrecio.classList.add('contTextoCarrito');
                         contenedorProducto.appendChild(contPrecio);
 
-                        let precioCompleto = productoLS['precio'] * productoLS['cantidad'];
-
                         let textoPrecio = document.createElement('p');
-                        textoPrecio.textContent = `${precioCompleto}`;
+                        textoPrecio.textContent = `${productoLS['precio']}`;
                         contPrecio.appendChild(textoPrecio);
 
                     break;
@@ -228,17 +188,94 @@ function crearCarrito(){
            }  
        
         }else{
-            console.log(`ya existe`);
+            //si ya esta creado el nodo cambio los valores del producto tomando el LS
+            console.log("contenedor ya existe");
+            let contenedor = document.getElementById(`cont${clave}`);
+            let nodosHijos = contenedor.childNodes;
 
-            continue;
+            console.log(nodosHijos);
+            for(x = 1; x <= nodosHijos.length; x++){
+                let cont = nodosHijos[x];
+                switch(x){
+                    case 1:
+                        let cantidad = cont.firstChild;
+                        console.log(cantidad);
+                        cantidad.remove();
+                        cont.innerHTML = `<p>${productoLS['cantidad']}</p>`;
+                    break;
+                    case 2:
+                        let precio = cont.firstChild;
+                        precio.remove();
+                        cont.innerHTML = `<p>${productoLS['precio']}</p>`
+                    break;
+                }
+
+            }
+            
         }
+}
+
+function crearCarritoInicio(){
+    //ESTA ES LA FUNCION QUE CREA EL CARRITO CUANDO SE ACTUALIZA LA PAGINA SI EXISTE ALGO EN EL LOCALS
+    let productosAlmacenados = 0;
+
+    //creo una variable para filtrar entre los productos almacenados
+    //y los otros elementos del local storage
+
+    for(i = 0; i < localStorage.length; i++){
+        if(localStorage.getItem(`producto${i}`)){
+            productosAlmacenados++;
+        }
+    }
+
+    //creo el contenedor del carrito
+    
+    if(productosAlmacenados > 0){
+        let contCarrito = document.createElement("section");
+        contCarrito.classList.add('contCarrito');
+        document.body.appendChild(contCarrito);
+    }
+    
+    
+    //bucle para crear cada uno de los contenedores del producto en le carrito
+    for(i = 0; i < productosAlmacenados; i++){ 
+        let clave = `producto${i}`;
+        console.log(`primera${clave}`);
+        console.log(`vuelta ${i}`);
+        
+        let productoLS = JSON.parse(localStorage.getItem(`${clave}`));
+        creadorProdCarrito(productoLS, clave);
     }   
 }
+
+function crearCarritoAgregado(indice){
+    //ESTA FUNCION CREA EL CARRITO SI NO EXISTE CUANDO SE AGREGA UN PRODUCTO
+
+    let exiteContCarrito = document.querySelector('.contCarrito');
+
+    if(exiteContCarrito === null && productosAlmacenados > 0){
+        let contCarrito = document.createElement("section");
+        contCarrito.classList.add('contCarrito');
+        document.body.appendChild(contCarrito);
+    }
+
+    let clave = `producto${indice}`
+    console.log(`CLAVEEE ${clave}`);
+
+    let productoLS = JSON.parse(localStorage.getItem(`${clave}`));
+
+    creadorProdCarrito(productoLS, clave);
+
+   
+}
+
+
+
 
 
 // LLAMADO
 document.addEventListener("DOMContentLoaded", crearTarjetas(arrayProductos));
-document.addEventListener("DOMContentLoaded", crearCarrito());
+document.addEventListener("DOMContentLoaded", crearCarritoInicio());
 
 //Bucle para la deteccion de elementos generados a partir de la cantidad de productos que haya
 for(i = 0; i < arrayProductos.length; i++){
@@ -264,7 +301,7 @@ for(i = 0; i < arrayProductos.length; i++){
 
     botonesAgregar[i].onclick = () => {
         agregarProductosLS(contenedorAgregar, contenedorTarjeta, indice);
-        crearCarrito();
+        crearCarritoAgregado(indice);
     }
 }
 
