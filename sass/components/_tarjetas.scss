@@ -15,7 +15,7 @@
 
 }
 
-.titulo-prod{
+.tituloProd{
     font-size: 2rem;
     color: $c-fondo-texto-p;
 }
@@ -55,32 +55,31 @@
      }
 }
 
+.imgTarjeta{
+    border: 1px solid red;
+    width: 300px; height: 200px;
+    overflow:hidden;
+}
 
 
 
-.nombreProd{
+
+.nombreTarjeta{
     font-size: 1.7rem;
     font-weight: 1;
     margin-bottom: 0;
 }
 
-.precio{
+.precioTarjeta{
     font-size: 1.3rem;
     margin-top: 0.5rem;
 }
 
-.cont-carrito{
-    @include flexbox(space-between, center, row);
-    gap: 0.5rem;
-    margin-top: 0;
-
-    p{
-        border: 1px solid $c-borde-prod;
-        //height: 1rem;
-        width: 2rem;
-        align-self: center;
-    }
+.contBtnTarjeta{
+    @include flexbox(centen, center, row);
+    gap: 1rem;
 }
+
 
 .botonCarrito{
     border: 1px solid $c-borde-prod;
@@ -98,13 +97,41 @@
     margin-bottom: 0.5rem;
 }
 
-.botonCarrito:active{
-    background-color: rgb(62, 107, 55);
-}
 
-.botonCantidad{
+
+.botonCarritoAgregar{
     font-size: 1.5rem;
     padding: 0 0.5rem;
 
     border-radius: 0.4rem;
 }
+
+.contProd{
+    @include grid(1fr 1fr 1fr 1fr);
+    gap: 3rem;
+    text-align: center;
+    border-top: 1px solid red;
+    font-size: 1.5rem;
+    
+}
+
+.botonCarrito:active{
+    background-color: rgb(62, 107, 55);
+}
+
+.carritoPrecioTotal{
+    font-size: 1.5rem;  
+    @include flexbox(flex-end, center, row);
+    padding-right: 1rem;
+}
+
+.contBtnEliminar{
+    margin: auto;
+}
+
+.btnEliminar{
+    font-size: 1.5rem;
+    color:rgb(180, 20, 20);
+    
+}
+

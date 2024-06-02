@@ -40,14 +40,15 @@ h1 {
   margin: auto;
 }
 
-.contenedorProducto {
+.carritoIndice {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: "1fr";
-  gap: 3rem;
-  text-align: center;
-  border-top: 1px solid red;
   font-size: 1.5rem;
+  text-align: center;
+}
+.carritoIndice .producto {
+  grid-column-start: 2;
 }
 
 .navbar {
@@ -135,7 +136,7 @@ h1 {
   gap: 2rem;
 }
 
-.titulo-prod {
+.tituloProd {
   font-size: 2rem;
   color: rgb(205, 0, 0);
 }
@@ -164,29 +165,30 @@ h1 {
   }
 }
 
-.nombreProd {
+.imgTarjeta {
+  border: 1px solid red;
+  width: 300px;
+  height: 200px;
+  overflow: hidden;
+}
+
+.nombreTarjeta {
   font-size: 1.7rem;
   font-weight: 1;
   margin-bottom: 0;
 }
 
-.precio {
+.precioTarjeta {
   font-size: 1.3rem;
   margin-top: 0.5rem;
 }
 
-.cont-carrito {
+.contBtnTarjeta {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: centen;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 0;
-}
-.cont-carrito p {
-  border: 1px solid rgb(183, 182, 182);
-  width: 2rem;
-  align-self: center;
+  gap: 1rem;
 }
 
 .botonCarrito {
@@ -204,14 +206,42 @@ h1 {
   border: 0px solid red;
 }
 
+.botonCarritoAgregar {
+  font-size: 1.5rem;
+  padding: 0 0.5rem;
+  border-radius: 0.4rem;
+}
+
+.contProd {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: "1fr";
+  gap: 3rem;
+  text-align: center;
+  border-top: 1px solid red;
+  font-size: 1.5rem;
+}
+
 .botonCarrito:active {
   background-color: rgb(62, 107, 55);
 }
 
-.botonCantidad {
+.carritoPrecioTotal {
   font-size: 1.5rem;
-  padding: 0 0.5rem;
-  border-radius: 0.4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 1rem;
+}
+
+.contBtnEliminar {
+  margin: auto;
+}
+
+.btnEliminar {
+  font-size: 1.5rem;
+  color: rgb(180, 20, 20);
 }
 
 /*# sourceMappingURL=style.css.map */

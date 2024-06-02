@@ -1,0 +1,26 @@
+[
+{
+    "identificador": "0",
+    "nombre": "Barra de chocolate",
+    "imagen": "rutafake",
+    "precio": 3500,
+    "stock": 50,
+    "descripcion": "Chocolate en barra 70% de cacao."
+},
+{
+    "identificador": "1",
+    "nombre": "Barra de chocolate 2",
+    "imagen": "rutafake",
+    "precio": 4000,
+    "stock": 50,
+    "descripcion": "Chocolate en barra 80% de cacao."
+},
+{
+    "identificador": "2",
+    "nombre": "Bombones de Chocolate",
+    "imagen": "rutafake",
+    "precio": 12000,
+    "stock": 100,
+    "descripcion": "Bombones de chocolate marca Felfort"
+}
+]
